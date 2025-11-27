@@ -61,22 +61,26 @@ It uses two internal reference maps:
 
 The framework knows how much RAM each instance type has:
 
-Instance Type	Memory
-db.m5.large	    8 GB
-db.r5.large	    16 GB
+Instance Type- db.m5.large	
+Memory - 8 GB
 
-
+Instance Type- db.r5.large
+Memory - 16 GB
+    
+	    
 This is used to calculate FreeableMemory thresholds (critical & warning) dynamically.
 
 2. Max Connection Map (Example Snippet)
 
 The framework also knows the maximum DB connections per instance type:
 
-Instance Type	Max Connections
-db.m5.large	    683
-db.r5.large	    1000
-=
+Instance Type- db.m5.large
+Max Connections- 683
 
+Instance Type- db.r5.large	
+Max Connections- 1000
+
+	    
 This is used to calculate: Critical connection threshold/Warning connection threshold
 
 Automatically, based on % levels.
