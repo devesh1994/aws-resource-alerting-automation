@@ -5,8 +5,10 @@ Alarms are based on CPU, Database Connections, and Freeable Memory, and threshol
 
 All logic is implemented inside:
 📄 lambda_function/rds_event_alerting.py
+
 The setup is triggered by:
 📄 event_bridge/event_bridge_rule.json
+
 Architecture reference:
 📄 architecture_diagrams/monitoring-framework.drawio.png
 
@@ -30,48 +32,20 @@ For every new RDS instance, the Lambda function automatically creates two catego
 🔥 CRITICAL Alerts (High Severity)
 
 Used for immediate action scenarios.
-Configured using:
 
-90% threshold
+Configured using: 90% threshold/5 datapoints/5-minute evaluation period
 
-5 datapoints
+Critical alarms include: High CPU Utilization/High Database Connections/Low Freeable Memory
 
-5-minute evaluation period
-
-Critical alarms include:
-
-High CPU Utilization
-
-High Database Connections
-
-Low Freeable Memory
-
-Alerts are sent to:
-
-Slack
-
-PagerDuty
-
- Email
+Alerts are sent to: Slack/PagerDuty/Email
 
 ⚠️ WARNING Alerts (Medium Severity)
 
 Used for early warning and investigation.
-Configured using:
 
-80% threshold
+Configured using: 80% threshold/10 datapoints/10-minute evaluation period
 
-10 datapoints
-
-10-minute evaluation period
-
-Warning alarms include:
-
-CPU Utilization (above warning threshold)
-
-Database Connections (above warning threshold)
-
-Freeable Memory (below warning threshold)
+Warning alarms include: CPU Utilization (above warning threshold)/Database Connections (above warning threshold)/Freeable Memory (below warning threshold)
 
 Alerts go to:
 
@@ -88,13 +62,9 @@ It uses two internal reference maps:
 The framework knows how much RAM each instance type has:
 
 Instance Type	Memory
-db.m5.large	8 GB
-db.r5.large	16 GB
-db.m5.2xlarge	32 GB
-db.r5.4xlarge	128 GB
-db.r6g.xlarge	32 GB
-db.t3.micro	1 GB
-db.r7g.large	64 GB
+db.m5.large	    8 GB
+db.r5.large	    16 GB
+
 
 This is used to calculate FreeableMemory thresholds (critical & warning) dynamically.
 
@@ -103,20 +73,11 @@ This is used to calculate FreeableMemory thresholds (critical & warning) dynamic
 The framework also knows the maximum DB connections per instance type:
 
 Instance Type	Max Connections
-db.m5.large	683
-db.r5.large	1000
-db.m5.xlarge	1365
-db.r5.4xlarge	4000
-db.r6g.2xlarge	3000
-db.t3.small	45
-db.t3.medium	90
-db.r6g.16xlarge	6000
+db.m5.large	    683
+db.r5.large	    1000
+=
 
-This is used to calculate:
-
-Critical connection threshold
-
-Warning connection threshold
+This is used to calculate: Critical connection threshold/Warning connection threshold
 
 Automatically, based on % levels.
 
