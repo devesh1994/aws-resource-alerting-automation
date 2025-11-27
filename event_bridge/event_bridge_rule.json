@@ -1,0 +1,17 @@
+{
+  "source": ["aws.rds"],
+  "detail-type": ["AWS API Call via CloudTrail"],
+  "detail": {
+    "eventSource": ["rds.amazonaws.com"],
+    "eventName": ["CreateDBInstance", "DeleteDBInstance"],
+    "$or": [{
+      "errorCode": [{
+        "exists": false
+      }]
+    }, {
+      "errorCode": [{
+        "anything-but": "DryRunOperation"
+      }]
+    }]
+  }
+}
